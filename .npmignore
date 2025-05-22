@@ -1,0 +1,43 @@
+# Source files (only dist/ is shipped)
+src/
+
+# Examples, tests, etc.
+examples/
+tests/
+server/
+
+# Configuration files
+.babelrc
+.eslintrc
+.travis.yml
+rollup.config.js
+jsdoc.json
+jest.config.js
+
+# Development tooling
+.github/
+.vscode/
+.idea/
+.editorconfig
+
+# Build/CI/CD files
+build/
+coverage/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.DS_Store
+.gitignore
+.npmrc
+.nvmrc
+.prettierrc
+*.todo
+CONTRIBUTING.md
+CHANGELOG.md
+ROADMAP.md
