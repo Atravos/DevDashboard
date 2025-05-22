@@ -6,146 +6,348 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Basic Dashboard - DevDashboard Example</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f5f5f5;
+      box-sizing: border-box;
     }
-    
-    header {
-      background-color: #2196f3;
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      transition: all 0.3s ease;
+      min-height: 100vh;
+    }
+
+    /* Glassmorphism Theme (Default) */
+    body.theme-glass {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 1rem;
+    }
+
+    /* Cyberpunk Theme */
+    body.theme-cyber {
+      background: #0a0a0a;
+      color: #00ff88;
+    }
+
+    header {
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    /* Glass Header */
+    body.theme-glass header {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.theme-glass header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    }
+
+    /* Cyber Header */
+    body.theme-cyber header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 2px solid #00ff88;
+      border-radius: 0px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.theme-cyber header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00ff88, transparent);
+      animation: scan 2s infinite;
+    }
+
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    
-    .header-title {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    
-    .header-links {
-      display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
     }
-    
-    .header-link {
-      color: white;
-      text-decoration: none;
-      font-size: 0.9rem;
-      opacity: 0.9;
+
+    .header-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
     }
-    
-    .header-link:hover {
-      opacity: 1;
-      text-decoration: underline;
+
+    body.theme-glass .header-title {
+      background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    
+
+    body.theme-cyber .header-title {
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px #00ff88;
+      color: #00ff88;
+    }
+
+    .header-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+    }
+
+    body.theme-cyber .header-subtitle {
+      font-family: 'Courier New', monospace;
+    }
+
     main {
-      padding: 1rem;
-      max-width: 1400px;
+      padding: 0 2rem 2rem;
+      max-width: 1600px;
       margin: 0 auto;
     }
-    
+
     .controls {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: 16px;
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       align-items: center;
-      background-color: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
     }
-    
+
+    /* Glass Controls */
+    body.theme-glass .controls {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Cyber Controls */
+    body.theme-cyber .controls {
+      background: #1a1a2e;
+      border: 1px solid #00ff88;
+      border-radius: 0px;
+    }
+
     .control-group {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    
-    select, button {
-      padding: 0.5rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      background-color: white;
+
+    .control-group label {
+      font-weight: 500;
       font-size: 0.9rem;
     }
-    
+
+    body.theme-cyber .control-group label {
+      font-family: 'Courier New', monospace;
+      color: #00ff88;
+    }
+
+    select, button {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: inherit;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    body.theme-cyber select,
+    body.theme-cyber button {
+      font-family: 'Courier New', monospace;
+      background: #16213e;
+      border: 1px solid #00ff88;
+      border-radius: 0px;
+    }
+
     button {
-      cursor: pointer;
-      background-color: #2196f3;
+      background: #6366f1;
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-      transition: background-color 0.2s;
+      cursor: pointer;
+      font-weight: 500;
     }
-    
+
     button:hover {
-      background-color: #0d8aee;
+      background: #5855eb;
+      transform: translateY(-1px);
     }
-    
+
+    body.theme-cyber button:hover {
+      background: #00ff88;
+      color: #0a0a0a;
+      box-shadow: 0 0 15px #00ff88;
+    }
+
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin-top: 1rem;
+      grid-template-columns: 1fr;
+      grid-template-rows: 400px 500px 500px;
+      gap: 2rem;
     }
-    
+
+    @media (min-width: 1024px) {
+      .dashboard {
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: 400px 500px;
+      }
+
+      .dashboard-card:nth-child(1) {
+        grid-column: 1 / 4;
+      }
+    }
+
     .dashboard-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-radius: 20px;
       overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
     }
-    
-    .dashboard-card:nth-child(1) {
-      grid-column: 1 / 3;
-      height: 300px;
+
+    /* Glass Cards */
+    body.theme-glass .dashboard-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
-    .dashboard-card:nth-child(2),
-    .dashboard-card:nth-child(3) {
-      height: 400px;
+
+    body.theme-glass .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
-    
+
+    body.theme-glass .dashboard-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      z-index: 1;
+    }
+
+    /* Cyber Cards */
+    body.theme-cyber .dashboard-card {
+      background: #1a1a2e;
+      border: 2px solid #00ff88;
+      border-radius: 0px;
+    }
+
+    body.theme-cyber .dashboard-card:hover {
+      box-shadow: 0 0 20px #00ff88;
+      border-color: #ff0088;
+    }
+
+    body.theme-cyber .dashboard-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 98px,
+        rgba(0, 255, 136, 0.1) 100px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .card-header {
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
     }
-    
+
+    body.theme-cyber .card-header {
+      border-bottom: 1px solid #00ff88;
+    }
+
     .card-title {
       margin: 0;
-      font-size: 1rem;
-      font-weight: bold;
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
+
+    body.theme-cyber .card-title {
+      font-family: 'Courier New', monospace;
+      color: #00ff88;
+      text-shadow: 0 0 5px #00ff88;
+    }
+
     .card-actions {
       display: flex;
       gap: 0.5rem;
     }
-    
+
     .card-action {
-      background: none;
-      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      color: #666;
-      padding: 0.25rem;
-      border-radius: 4px;
+      color: inherit;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .card-action:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    body.theme-cyber .card-action {
+      background: #16213e;
+      border: 1px solid #00ff88;
+      border-radius: 0px;
+    }
+
+    body.theme-cyber .card-action:hover {
+      background: #00ff88;
+      color: #0a0a0a;
     }
 
     .card-content {
       position: relative;
       width: 100%;
-      height: 100%;
+      flex: 1;
       overflow: hidden;
+      z-index: 2;
+      padding: 1rem;
     }
 
     .viz-wrapper {
@@ -153,46 +355,135 @@
       width: 100%;
       height: 100%;
     }
-    
-    .card-action:hover {
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    
-    .card-content {
-      height: calc(100% - 56px);
-    }
-    
+
+    /* Responsive Design */
     @media (max-width: 768px) {
-      .dashboard {
-        grid-template-columns: 1fr;
-      }
-      
-      .dashboard-card:nth-child(1) {
-        grid-column: auto;
-      }
-      
       .controls {
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      main {
+        padding: 0 1rem 1rem;
+      }
+
+      header {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .header-title {
+        font-size: 2rem;
+      }
+
+      .dashboard {
+        grid-template-rows: 350px 450px 450px;
+      }
+    }
+
+    /* Loading and Error States */
+    .viz-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      z-index: 10;
+      font-size: 1.1rem;
+    }
+    
+    .viz-error {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      padding: 1rem;
+      text-align: center;
+      z-index: 5;
+      font-weight: 500;
+    }
+
+    /* DevDashboard overrides to ensure proper sizing */
+    .dev-dashboard {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .dev-dashboard-viz {
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      background: none !important;
+      border-radius: 0 !important;
+    }
+
+    /* Theme-specific tooltip styles */
+    .tooltip {
+      font-family: inherit;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    body.theme-glass .tooltip {
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    body.theme-cyber .tooltip {
+      background: #1a1a2e;
+      border: 1px solid #00ff88;
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
     }
   </style>
 </head>
-<body>
+<body class="theme-glass">
   <header>
-    <h1 class="header-title">Basic Dashboard Example</h1>
-    <div class="header-links">
-      <a href="/examples" class="header-link">Back to Examples</a>
-      <a href="https://github.com/yourusername/dev-dashboard" class="header-link">GitHub</a>
+    <div class="header-content">
+      <div>
+        <h1 class="header-title">📊 DevDashboard</h1>
+        <p class="header-subtitle">Developer productivity metrics at a glance</p>
+      </div>
+      <div class="header-links">
+        <a href="/examples" style="color: inherit; text-decoration: none; opacity: 0.8;">← Back to Examples</a>
+      </div>
     </div>
   </header>
   
   <main>
     <div class="controls">
       <div class="control-group">
-        <label for="theme">Theme:</label>
-        <select id="theme">
+        <label for="visualTheme">🎨 Visual Theme:</label>
+        <select id="visualTheme">
+          <option value="glass">Glassmorphism</option>
+          <option value="cyber">Cyberpunk</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="dataTheme">📊 Data Theme:</label>
+        <select id="dataTheme">
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="ocean">Ocean</option>
@@ -200,7 +491,7 @@
       </div>
       
       <div class="control-group">
-        <label for="timeRange">Time Range:</label>
+        <label for="timeRange">⏱️ Time Range:</label>
         <select id="timeRange">
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -208,13 +499,16 @@
         </select>
       </div>
       
-      <button id="refreshData">Refresh Data</button>
+      <button id="refreshData">🔄 Refresh Data</button>
     </div>
     
     <div id="dashboard" class="dashboard">
       <div class="dashboard-card">
         <div class="card-header">
-          <h2 class="card-title">Commit Frequency</h2>
+          <h2 class="card-title">
+            <span>📈</span>
+            <span id="commit-title">Commit Frequency</span>
+          </h2>
           <div class="card-actions">
             <button class="card-action" title="Download CSV">📥</button>
             <button class="card-action" title="View Fullscreen">⛶</button>
@@ -227,7 +521,10 @@
       
       <div class="dashboard-card">
         <div class="card-header">
-          <h2 class="card-title">Code Quality</h2>
+          <h2 class="card-title">
+            <span>🔍</span>
+            <span id="quality-title">Code Quality</span>
+          </h2>
           <div class="card-actions">
             <button class="card-action" title="Download CSV">📥</button>
             <button class="card-action" title="View Fullscreen">⛶</button>
@@ -240,7 +537,10 @@
       
       <div class="dashboard-card">
         <div class="card-header">
-          <h2 class="card-title">Sprint Velocity</h2>
+          <h2 class="card-title">
+            <span>🚀</span>
+            <span id="velocity-title">Sprint Velocity</span>
+          </h2>
           <div class="card-actions">
             <button class="card-action" title="Download CSV">📥</button>
             <button class="card-action" title="View Fullscreen">⛶</button>
@@ -256,7 +556,7 @@
   <script type="module">
     import { DevDashboard, ThemeManager, DataProcessor } from '../dist/dev-dashboard.esm.js';
     
-    // Sample data generators
+    // Sample data generators (same as your original)
     const generateCommitData = (days = 30) => {
       const commits = [];
       const date = new Date();
@@ -265,11 +565,9 @@
       for (let i = 0; i < days; i++) {
         date.setDate(date.getDate() + 1);
         
-        // Random commit count (more commits on weekdays)
         const isWeekend = date.getDay() === 0 || date.getDay() === 6;
         const count = Math.floor(Math.random() * (isWeekend ? 5 : 15)) + (isWeekend ? 0 : 5);
         
-        // Add commits
         for (let j = 0; j < count; j++) {
           commits.push({
             id: `commit-${i}-${j}`,
@@ -289,7 +587,6 @@
       const date = new Date();
       date.setDate(date.getDate() - days);
       
-      // Start with some baseline values
       let bugs = 15;
       let vulnerabilities = 8;
       let codeSmells = 120;
@@ -298,7 +595,6 @@
       for (let i = 0; i < days; i++) {
         date.setDate(date.getDate() + 1);
         
-        // Randomly adjust values (mostly improving over time)
         bugs = Math.max(0, bugs + (Math.random() > 0.7 ? 1 : -1));
         vulnerabilities = Math.max(0, vulnerabilities + (Math.random() > 0.8 ? 1 : -1));
         codeSmells = Math.max(0, codeSmells + (Math.random() > 0.6 ? 5 : -8));
@@ -320,17 +616,10 @@
       const data = [];
       
       for (let i = 1; i <= sprints; i++) {
-        // Total points between 20-40
         const totalPoints = Math.floor(Math.random() * 20) + 20;
-        
-        // Completion rate between 60-100%
         const completionRate = Math.random() * 0.4 + 0.6;
-        const completedPoints = Math.floor(totalPoints * completionRate);
-        
-        // Number of stories between 5-15
         const storiesCount = Math.floor(Math.random() * 10) + 5;
         
-        // Create stories
         for (let j = 1; j <= storiesCount; j++) {
           const storyPoints = Math.floor(Math.random() * 8) + 1;
           const isCompleted = j <= Math.floor(storiesCount * completionRate);
@@ -348,7 +637,7 @@
       return data;
     };
     
-    // Initialize separate dashboard instances for each chart container
+    // Initialize dashboard instances with proper sizing options
     const commitDashboard = new DevDashboard({
       container: '#commit-chart',
       theme: 'light'
@@ -364,27 +653,16 @@
       theme: 'light'
     });
     
-    // Get time range
-    const timeRangeSelect = document.getElementById('timeRange');
-    const getTimeRange = () => timeRangeSelect.value;
-    
-    // Process data
+    // Initialize data
     let commitData = generateCommitData(30);
     let qualityData = generateCodeQualityData(30);
     let storyPointsData = generateStoryPointsData(8);
     
     const processData = () => {
-      const timeRange = getTimeRange();
+      const timeRange = document.getElementById('timeRange').value;
       
-      // Process commit data
-      const processedCommitData = DataProcessor.processCommitData(commitData, {
-        timeRange
-      });
-      
-      // Process code quality data
+      const processedCommitData = DataProcessor.processCommitData(commitData, { timeRange });
       const processedQualityData = DataProcessor.processCodeQualityData(qualityData);
-      
-      // Process story points data
       const processedStoryPointsData = DataProcessor.processStoryPointsData(storyPointsData);
       
       return {
@@ -394,23 +672,21 @@
       };
     };
     
-    // Add visualizations to each dashboard instance
     const initializeVisualizations = () => {
       const data = processData();
       
-      // Add commit frequency chart to its dashboard
       commitDashboard.addVisualization({
         id: 'commit-frequency',
         type: 'commitFrequency',
         data: data.commits,
         options: {
-          timeRange: getTimeRange(),
+          timeRange: document.getElementById('timeRange').value,
           xAxisLabel: 'Date',
-          yAxisLabel: 'Commits'
+          yAxisLabel: 'Commits',
+          margin: { top: 40, right: 40, bottom: 60, left: 60 }
         }
       });
       
-      // Add code quality chart to its dashboard
       qualityDashboard.addVisualization({
         id: 'code-quality',
         type: 'codeQuality',
@@ -418,11 +694,11 @@
         options: {
           metrics: ['bugs', 'vulnerabilities', 'codeSmells', 'coverage'],
           xAxisLabel: 'Date',
-          yAxisLabel: 'Issues'
+          yAxisLabel: 'Issues',
+          margin: { top: 40, right: 60, bottom: 80, left: 60 }
         }
       });
       
-      // Add velocity chart to its dashboard
       velocityDashboard.addVisualization({
         id: 'velocity',
         type: 'velocity',
@@ -431,52 +707,60 @@
           showVelocity: true,
           velocityWindow: 3,
           xAxisLabel: 'Sprint',
-          yAxisLabel: 'Story Points'
+          yAxisLabel: 'Story Points',
+          margin: { top: 40, right: 40, bottom: 60, left: 60 }
         }
       });
     };
     
-    // Update data for all dashboards
     const updateData = () => {
       const data = processData();
-      
-      // Update commit frequency chart
       commitDashboard.updateData('commit-frequency', data.commits);
-      
-      // Update code quality chart
       qualityDashboard.updateData('code-quality', data.quality);
-      
-      // Update velocity chart
       velocityDashboard.updateData('velocity', data.storyPoints);
     };
     
-    // Handle theme change for all dashboards
-    const themeSelect = document.getElementById('theme');
-    themeSelect.addEventListener('change', () => {
-      const theme = themeSelect.value;
+    // Theme handling
+    const visualThemeSelect = document.getElementById('visualTheme');
+    const dataThemeSelect = document.getElementById('dataTheme');
+    
+    // Update visual theme (CSS styling)
+    visualThemeSelect.addEventListener('change', () => {
+      const theme = visualThemeSelect.value;
+      document.body.className = `theme-${theme}`;
+      
+      // Update titles for cyberpunk theme
+      if (theme === 'cyber') {
+        document.getElementById('commit-title').textContent = 'COMMIT_FREQ_MODULE';
+        document.getElementById('quality-title').textContent = 'QUALITY_SCAN_SYS';
+        document.getElementById('velocity-title').textContent = 'VELOCITY_TRACKER';
+      } else {
+        document.getElementById('commit-title').textContent = 'Commit Frequency';
+        document.getElementById('quality-title').textContent = 'Code Quality';
+        document.getElementById('velocity-title').textContent = 'Sprint Velocity';
+      }
+    });
+    
+    // Update data theme (chart colors)
+    dataThemeSelect.addEventListener('change', () => {
+      const theme = dataThemeSelect.value;
       commitDashboard.setTheme(theme);
       qualityDashboard.setTheme(theme);
       velocityDashboard.setTheme(theme);
     });
     
-    // Handle time range change
-    timeRangeSelect.addEventListener('change', () => {
-      updateData();
-    });
+    // Time range change
+    document.getElementById('timeRange').addEventListener('change', updateData);
     
-    // Handle refresh button
-    const refreshButton = document.getElementById('refreshData');
-    refreshButton.addEventListener('click', () => {
-      // Generate new random data
+    // Refresh data
+    document.getElementById('refreshData').addEventListener('click', () => {
       commitData = generateCommitData(30);
       qualityData = generateCodeQualityData(30);
       storyPointsData = generateStoryPointsData(8);
-      
-      // Update visualizations
       updateData();
     });
     
-    // Add fullscreen functionality
+    // Fullscreen functionality
     document.querySelectorAll('.card-action[title="View Fullscreen"]').forEach(button => {
       button.addEventListener('click', (event) => {
         const card = event.target.closest('.dashboard-card');
@@ -490,7 +774,7 @@
       });
     });
     
-    // Initialize dashboard
+    // Initialize
     initializeVisualizations();
   </script>
 </body>
