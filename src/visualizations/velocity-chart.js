@@ -1,7 +1,6 @@
 // src/visualizations/velocity-chart.js
 import BaseVisualization from './base';
 const d3 = window.d3;
-
 /**
  * VelocityChart visualization for displaying story points and velocity
  * @class

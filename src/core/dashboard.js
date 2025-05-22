@@ -1,8 +1,8 @@
 // src/core/dashboard.js
-/**
- * DevDashboard - Main dashboard class
- * @class
- */
+import CommitChart from '../visualizations/commit-chart.js';
+import QualityMetricsChart from '../visualizations/quality-metrics.js';
+import VelocityChart from '../visualizations/velocity-chart.js';
+import ThemeManager from '../themes/theme-manager.js';
 class DevDashboard {
   /**
    * Create a new dashboard instance
@@ -53,7 +53,7 @@ class DevDashboard {
    * @private
    */
   _initTheme() {
-    // Will be expanded with a proper theme manager
+    ThemeManager.applyTheme(this.config.theme, this.container);
     this.container.setAttribute('data-theme', this.config.theme);
   }
   
@@ -89,6 +89,8 @@ class DevDashboard {
       options: config.options || {}
     });
     
+    visualization.render();
+    
     this.visualizations.set(config.id, {
       config,
       element: vizElement,
@@ -112,13 +114,18 @@ class DevDashboard {
    * @returns {Object} - Visualization instance
    */
   _createVisualization(type, config) {
-    // Will be expanded with a proper factory pattern
-    // For now, return a placeholder
-    return {
-      render: () => {
-        config.element.textContent = `${type} visualization (placeholder)`;
-      }
+    const visualizations = {
+      commitFrequency: CommitChart,
+      codeQuality: QualityMetricsChart,
+      velocity: VelocityChart
     };
+    
+    const VisualizationClass = visualizations[type];
+    if (!VisualizationClass) {
+      throw new Error(`Unknown visualization type: ${type}`);
+    }
+    
+    return new VisualizationClass(config);
   }
   
   /**
@@ -202,13 +209,16 @@ class DevDashboard {
   }
   
   /**
-   * Set dashboard theme
-   * @param {string} theme - Theme name
-   * @returns {DevDashboard} - The dashboard instance for chaining
-   */
+ * Set dashboard theme
+ * @param {string} theme - Theme name
+ * @returns {DevDashboard} - The dashboard instance for chaining
+ */
   setTheme(theme) {
     this.config.theme = theme;
     this.container.setAttribute('data-theme', theme);
+    
+    // Actually apply the theme styles using ThemeManager
+    ThemeManager.applyTheme(theme, this.container);
     
     // Trigger theme changed event
     this._triggerEvent('themeChanged', {

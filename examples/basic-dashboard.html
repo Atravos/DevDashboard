@@ -348,9 +348,19 @@
       return data;
     };
     
-    // Initialize dashboard
-    const dashboard = new DevDashboard({
-      container: '#dashboard',
+    // Initialize separate dashboard instances for each chart container
+    const commitDashboard = new DevDashboard({
+      container: '#commit-chart',
+      theme: 'light'
+    });
+    
+    const qualityDashboard = new DevDashboard({
+      container: '#code-quality',
+      theme: 'light'
+    });
+    
+    const velocityDashboard = new DevDashboard({
+      container: '#velocity-chart',
       theme: 'light'
     });
     
@@ -384,12 +394,12 @@
       };
     };
     
-    // Add visualizations
+    // Add visualizations to each dashboard instance
     const initializeVisualizations = () => {
       const data = processData();
       
-      // Add commit frequency chart
-      dashboard.addVisualization({
+      // Add commit frequency chart to its dashboard
+      commitDashboard.addVisualization({
         id: 'commit-frequency',
         type: 'commitFrequency',
         data: data.commits,
@@ -400,8 +410,8 @@
         }
       });
       
-      // Add code quality chart
-      dashboard.addVisualization({
+      // Add code quality chart to its dashboard
+      qualityDashboard.addVisualization({
         id: 'code-quality',
         type: 'codeQuality',
         data: data.quality,
@@ -412,8 +422,8 @@
         }
       });
       
-      // Add velocity chart
-      dashboard.addVisualization({
+      // Add velocity chart to its dashboard
+      velocityDashboard.addVisualization({
         id: 'velocity',
         type: 'velocity',
         data: data.storyPoints,
@@ -426,24 +436,27 @@
       });
     };
     
-    // Update data
+    // Update data for all dashboards
     const updateData = () => {
       const data = processData();
       
       // Update commit frequency chart
-      dashboard.updateData('commit-frequency', data.commits);
+      commitDashboard.updateData('commit-frequency', data.commits);
       
       // Update code quality chart
-      dashboard.updateData('code-quality', data.quality);
+      qualityDashboard.updateData('code-quality', data.quality);
       
       // Update velocity chart
-      dashboard.updateData('velocity', data.storyPoints);
+      velocityDashboard.updateData('velocity', data.storyPoints);
     };
     
-    // Handle theme change
+    // Handle theme change for all dashboards
     const themeSelect = document.getElementById('theme');
     themeSelect.addEventListener('change', () => {
-      dashboard.setTheme(themeSelect.value);
+      const theme = themeSelect.value;
+      commitDashboard.setTheme(theme);
+      qualityDashboard.setTheme(theme);
+      velocityDashboard.setTheme(theme);
     });
     
     // Handle time range change
