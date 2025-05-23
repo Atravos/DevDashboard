@@ -1,5 +1,6 @@
 // src/index.js
 import DevDashboard from './core/dashboard';
+import DevDashboardFactory from './devdashboard'; // The new simplified API
 import Config from './core/config';
 import ThemeManager from './themes/theme-manager';
 import DataProcessor from './processors/data-processor';
@@ -10,31 +11,13 @@ import CommitChart from './visualizations/commit-chart';
 import QualityMetricsChart from './visualizations/quality-metrics';
 import VelocityChart from './visualizations/velocity-chart';
 
-// Register visualizations
-const visualizations = {
-  commitFrequency: CommitChart,
-  codeQuality: QualityMetricsChart,
-  velocity: VelocityChart
-};
+// Export the simplified API as the default
+export default DevDashboardFactory;
 
-// Visualization factory
-function createVisualization(type, config) {
-  const VisualizationClass = visualizations[type];
-  if (!VisualizationClass) {
-    throw new Error(`Visualization type "${type}" not found`);
-  }
-  
-  return new VisualizationClass(config);
-}
-
-// Add visualization factory to DevDashboard
-DevDashboard.prototype._createVisualization = function(type, config) {
-  return createVisualization(type, config);
-};
-
-// Export public API
+// Also export individual components for advanced users
 export {
-  DevDashboard,
+  DevDashboard as Dashboard,  // Core dashboard class
+  DevDashboardFactory,        // Simplified API
   Config,
   ThemeManager,
   DataProcessor,
@@ -44,10 +27,7 @@ export {
   VelocityChart
 };
 
-// Default export
-export default {
-  dashboard: DevDashboard,
-  config: Config,
-  theme: ThemeManager,
-  data: DataProcessor
-};
+// For backward compatibility and CDN usage
+if (typeof window !== 'undefined') {
+  window.DevDashboard = DevDashboardFactory;
+}

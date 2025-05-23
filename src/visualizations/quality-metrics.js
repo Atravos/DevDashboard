@@ -102,7 +102,12 @@ class QualityMetricsChart extends BaseVisualization {
     // Set domain for color scale
     this.colorScale
       .domain(metricsToDisplay)
-      .range(d3.range(metricsToDisplay.length).map(i => `var(--dd-color-chart-${i})`));
+      .range(d3.range(metricsToDisplay.length).map(i => {
+        const cssVar = getComputedStyle(this.wrapper).getPropertyValue(`--dd-color-chart-${i}`);
+        // Fallback colors if CSS variables aren't set
+        const fallbackColors = ['#2196f3', '#4caf50', '#ff9800', '#f44336', '#9c27b0', '#00bcd4', '#ffeb3b', '#795548'];
+        return cssVar || fallbackColors[i] || '#666';
+      }));
     
     // Update x scale
     this.xScale

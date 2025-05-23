@@ -141,7 +141,10 @@ class CommitChart extends BaseVisualization {
     // Create color scale
     const colorScale = d3.scaleLinear()
       .domain([0, d3.max(this.data.commits, d => d.count)])
-      .range(['#7fcdbb', '#2c7fb8']);
+      .range([
+        getComputedStyle(this.wrapper).getPropertyValue('--dd-color-chart-0') || '#2196f3',
+        getComputedStyle(this.wrapper).getPropertyValue('--dd-color-chart-1') || '#4caf50'
+      ]);
     
     // Draw bars
     const bars = this.chartGroup.selectAll('.bar')

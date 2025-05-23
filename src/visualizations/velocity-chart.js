@@ -132,9 +132,9 @@ class VelocityChart extends BaseVisualization {
       .text(this.options.yAxisLabel || 'Story Points');
     
     // Define colors
-    const totalColor = 'var(--dd-color-chart-0)';
-    const completedColor = 'var(--dd-color-chart-1)';
-    const velocityColor = 'var(--dd-color-chart-2)';
+    const totalColor = getComputedStyle(this.wrapper).getPropertyValue('--dd-color-chart-0') || '#2196f3';
+    const completedColor = getComputedStyle(this.wrapper).getPropertyValue('--dd-color-chart-1') || '#4caf50';
+    const velocityColor = getComputedStyle(this.wrapper).getPropertyValue('--dd-color-chart-2') || '#ff9800';
     
     // Remove existing elements
     this.chartGroup.selectAll('.bar-total').remove();

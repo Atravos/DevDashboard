@@ -482,11 +482,12 @@
       </div>
 
       <div class="control-group">
-        <label for="dataTheme">📊 Data Theme:</label>
+        <label for="dataTheme">📊 Dashboard Theme:</label>
         <select id="dataTheme">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
+          <option value="professional">Professional</option>
+          <option value="darkMode">Dark Mode</option>
           <option value="ocean">Ocean</option>
+          <option value="cyberpunk">Cyberpunk</option>
         </select>
       </div>
       
@@ -554,7 +555,7 @@
   </main>
   
   <script type="module">
-    import { DevDashboard, ThemeManager, DataProcessor } from '../dist/dev-dashboard.esm.js';
+    import DevDashboard, { Dashboard, ThemeManager, DataProcessor } from '../dist/dev-dashboard.esm.js';
     
     // Sample data generators (same as your original)
     const generateCommitData = (days = 30) => {
@@ -637,18 +638,18 @@
       return data;
     };
     
-    // Initialize dashboard instances with proper sizing options
-    const commitDashboard = new DevDashboard({
+    // Initialize dashboard instances using the core Dashboard class
+    const commitDashboard = new Dashboard({
       container: '#commit-chart',
       theme: 'light'
     });
     
-    const qualityDashboard = new DevDashboard({
+    const qualityDashboard = new Dashboard({
       container: '#code-quality',
       theme: 'light'
     });
     
-    const velocityDashboard = new DevDashboard({
+    const velocityDashboard = new Dashboard({
       container: '#velocity-chart',
       theme: 'light'
     });
